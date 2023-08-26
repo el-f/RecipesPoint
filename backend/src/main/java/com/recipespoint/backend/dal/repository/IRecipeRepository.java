@@ -5,11 +5,9 @@ import com.recipespoint.backend.dal.model.enums.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-@Repository
 public interface IRecipeRepository extends JpaRepository<RecipeEntity, Long> {
 
     List<RecipeEntity> findAllByCuisinesContaining(Cuisine cuisine);
