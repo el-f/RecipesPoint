@@ -9,18 +9,18 @@ import java.util.Map;
 @Slf4j
 @AllArgsConstructor
 public enum Diet {
-    GLUTEN_FREE("gluten free"),
     DAIRY_FREE("dairy free"),
+    FODMAP("fodmap friendly"),
+    GLUTEN_FREE("gluten free"),
     KETOGENIC("ketogenic"),
-    VEGETARIAN("vegetarian"),
+    LACTO_OVO_VEGETARIAN("lacto ovo vegetarian"),
     LACTO_VEGETARIAN("lacto vegetarian"),
     OVO_VEGETARIAN("ovo vegetarian"),
-    LACTO_OVO_VEGETARIAN("lacto ovo vegetarian"),
-    VEGAN("vegan"),
-    PROLETARIAN("pescatarian"),
     PALEOLITHIC("paleolithic"),
     PRIMAL("primal"),
-    FODMAP("fodmap friendly"),
+    PROLETARIAN("pescatarian"),
+    VEGAN("vegan"),
+    VEGETARIAN("vegetarian"),
     WHOLE30("whole30");
 
 

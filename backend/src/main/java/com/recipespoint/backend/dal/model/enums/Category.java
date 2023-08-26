@@ -10,22 +10,22 @@ import java.util.Map;
 @AllArgsConstructor
 @Slf4j
 public enum Category {
-    FINGERFOOD("fingerfood"),
     ANTIPASTI("antipasti"),
-    STARTER("starter"),
-    SNACK("snack"),
     ANTIPASTO("antipasto"),
-    HORDOEUVRE("hor d'oeuvre"),
-    MAIN_COURSE("main course"),
-    SIDE_DISH("side dish"),
-    DESSERT("dessert"),
     APPETIZER("appetizer"),
-    SALAD("salad"),
+    BEVERAGE("beverage"),
     BREAD("bread"),
     BREAKFAST("breakfast"),
+    DESSERT("dessert"),
+    FINGERFOOD("fingerfood"),
+    HORDOEUVRE("hor d'oeuvre"),
+    MAIN_COURSE("main course"),
+    SALAD("salad"),
+    SAUCE("sauce"),
+    SIDE_DISH("side dish"),
+    SNACK("snack"),
     SOUP("soup"),
-    BEVERAGE("beverage"),
-    SAUCE("sauce");
+    STARTER("starter");
 
     private final String label;
 

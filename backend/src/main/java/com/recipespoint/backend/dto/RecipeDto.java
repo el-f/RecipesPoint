@@ -3,44 +3,39 @@ package com.recipespoint.backend.dto;
 import java.util.Collection;
 
 public record RecipeDto(
-        Long id,
-        Boolean vegetarian,
-        Boolean vegan,
-        Boolean glutenFree,
-        Boolean dairyFree,
-        Boolean veryHealthy,
         Boolean cheap,
-        Boolean veryPopular,
-        Boolean sustainable,
+        Boolean dairyFree,
+        Boolean glutenFree,
         Boolean lowFodmap,
-        Integer weightWatcherSmartPoIntegers,
-        String gaps,
-        Integer preparationMinutes,
-        Integer cookingMinutes,
-        Integer aggregateLikes,
-        Integer healthScore,
-        String creditsText,
-        String license,
-        String sourceName,
+        Boolean sustainable,
+        Boolean vegan,
+        Boolean vegetarian,
+        Boolean veryHealthy,
+        Boolean veryPopular,
         Double pricePerServing,
-        String title,
+        Integer aggregateLikes,
+        Integer cookingMinutes,
+        Integer healthScore,
+        Integer preparationMinutes,
         Integer readyInMinutes,
         Integer servings,
-        String sourceUrl,
-        String spoonacularSourceUrl,
+        Integer weightWatcherSmartPoIntegers,
+        Long id,
+        String creditsText,
+        String gaps,
         String image,
         String imageType,
+        String license,
+        String sourceName,
+        String sourceUrl,
+        String spoonacularSourceUrl,
         String summary,
-
+        String title,
+        Collection<AnalyzedInstruction> analyzedInstructions,
         Collection<String> cuisines,
-
-        Collection<String> dishTypes,
-
         Collection<String> diets,
-
-        Collection<String> occasions,
-
-        Collection<AnalyzedInstruction> analyzedInstructions
+        Collection<String> dishTypes,
+        Collection<String> occasions
 ) {
     public record AnalyzedInstruction(
             String name,
