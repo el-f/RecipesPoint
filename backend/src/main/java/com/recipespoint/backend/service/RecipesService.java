@@ -51,6 +51,15 @@ public class RecipesService {
         return null; // TODO: implement
     }
 
+    public List<RecipeDto> getRecipes(RecipeQuery query) {
+        try {
+            return getRecipesUsingCache(query);
+        } catch (Exception e) {
+            log.error("Failed to get recipes from cache, querying API", e);
+            return spoonacularService.getRecipes(query);
+        }
+    }
+
     /**
      * Get recipes from the DB or from the API if not cached.
      * As explained in {@link RecipeQuery}, to minimize the API requests due to Spoonacular's daily limit,
@@ -59,7 +68,7 @@ public class RecipesService {
      * @param query the query to get the recipes by.
      * @return the recipes.
      */
-    public List<RecipeDto> getRecipes(RecipeQuery query) {
+    public List<RecipeDto> getRecipesUsingCache(RecipeQuery query) {
         int offset = query.offset();
         int number = query.number();
         String category = query.category();
@@ -134,7 +143,7 @@ public class RecipesService {
             );
         }
 
-        mergeCacheWithAttachedRecipes(newCaches);
+        attachExistingRecipes(newCaches);
 
         // by saving all the caches, we also save the recipes in them (cascade);
         List<RecipeQueryEntity> mergedCaches = mergeCaches(caches, newCaches);
@@ -154,7 +163,7 @@ public class RecipesService {
      *
      * @param caches the caches to merge with the DB.
      */
-    private void mergeCacheWithAttachedRecipes(List<RecipeQueryEntity> caches) {
+    private void attachExistingRecipes(List<RecipeQueryEntity> caches) {
         caches.forEach(cache -> {
             Map<Long, RecipeEntity> alreadyAttached = new HashMap<>();
             cache.getRecipes().forEach(recipe -> {
