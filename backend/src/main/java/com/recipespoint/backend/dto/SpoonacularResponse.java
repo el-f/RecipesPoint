@@ -1,10 +1,10 @@
 package com.recipespoint.backend.dto;
 
-import java.util.Collection;
+import java.util.List;
 
 public record SpoonacularResponse(
-        Long offset,
-        Long number,
-        Long totalResults,
-        Collection<RecipeDto> results
+        Integer offset,
+        Integer number,
+        Integer totalResults,
+        List<RecipeDto> results
 ) {}

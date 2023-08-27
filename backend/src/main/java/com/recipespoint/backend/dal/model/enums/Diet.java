@@ -18,7 +18,8 @@ public enum Diet {
     OVO_VEGETARIAN("ovo vegetarian"),
     PALEOLITHIC("paleolithic"),
     PRIMAL("primal"),
-    PROLETARIAN("pescatarian"),
+    PROLETARIAN("proletarian"),
+    PESCATARIAN("pescatarian"),
     VEGAN("vegan"),
     VEGETARIAN("vegetarian"),
     WHOLE30("whole30");

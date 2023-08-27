@@ -32,6 +32,7 @@ public enum Cuisine {
     MEXICAN("Mexican"),
     MIDDLE_EASTERN("Middle Eastern"),
     NORDIC("Nordic"),
+    SOUTH_AMERICAN("South American"),
     SOUTHERN("Southern"),
     SPANISH("Spanish"),
     THAI("Thai"),
