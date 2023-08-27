@@ -108,23 +108,19 @@ public class RecipesService {
                 currentOffset = cacheStart; // now we are at the cache
             }
 
-            int start = currentOffset; // limit the start to the cache size
-            int end = Math.min(neededEndExclusive,
-                               cache.getOffset() + cache.getNumber());  // limit the end to the cache size
+            // limit the start to the cache size
+            int start = Math.max(currentOffset - cache.getOffset(), 0);
+            // limit the end to the cache size
+            int end = Math.min(neededEndExclusive - cache.getOffset(), cache.getNumber());
 
             log.info(
                     "Get from DB for range {}-{} in query {}",
                     start,
-                    end,
+                    end - 1,
                     query
             );
 
             List<RecipeEntity> cachedRecipes = cache.getRecipes();
-            if (cachedRecipes.size() < end) {
-                log.error("Cache is corrupt, invalidating and querying API");
-                recipeQueryRepo.delete(cache);
-                break;
-            }
             recipes.addAll(cachedRecipes.subList(start, end));
             currentOffset = cacheEnd;
         }
