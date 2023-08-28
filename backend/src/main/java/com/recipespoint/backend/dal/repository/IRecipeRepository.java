@@ -10,6 +10,11 @@ import java.util.List;
 
 public interface IRecipeRepository extends JpaRepository<RecipeEntity, Long> {
 
+    /*
+     * Since specifically there is no business logic that needs these methods, and even our search just uses cached queries,
+     * these methods remain unused, but I left them here for completeness’s sake.
+     */
+
     List<RecipeEntity> findAllByCuisinesContaining(Cuisine cuisine);
 
     Page<RecipeEntity> findByCuisinesContaining(Cuisine cuisine, Pageable pageable);
