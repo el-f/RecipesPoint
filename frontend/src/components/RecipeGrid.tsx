@@ -23,6 +23,12 @@ export function RecipeGrid({ recipes }: RecipeGridProps) {
     e.preventDefault();
   };
 
+  const isOnHome = window.location.pathname === "/home";
+
+  if (recipes.length === 0) {
+    return <div>No recipes found.</div>;
+  }
+
   return (
     <>
       {selectedRecipe && (
@@ -38,13 +44,15 @@ export function RecipeGrid({ recipes }: RecipeGridProps) {
           </Grid>
         ))}
       </Grid>
-      <Button
-        variant="contained"
-        style={{ backgroundColor: "#5E81AC", color: "white", marginTop: 50 }}
-        onClick={loadMore}
-      >
-        Load More
-      </Button>
+      {isOnHome && (
+        <Button
+          variant="contained"
+          style={{ backgroundColor: "#5E81AC", color: "white", marginTop: 50 }}
+          onClick={loadMore}
+        >
+          Load More
+        </Button>
+      )}
     </>
   );
 }
