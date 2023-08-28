@@ -49,6 +49,7 @@ public class RecipeService {
 
     public List<RecipeDto> getRecipes(RecipeQuery query) {
         try {
+            log.info("Getting recipes for query {}", query);
             return getRecipesUsingCache(query);
         } catch (Exception e) {
             log.error("Failed to get recipes from cache, querying API", e);
@@ -100,7 +101,7 @@ public class RecipeService {
             // we did not get to the cache yet, so we need to query the API
             if (currentOffset < cacheStart) {
                 collectRecipes(
-                        new RecipeQuery(offset, cacheStart - currentOffset, category, cuisine, diet, freeText),
+                        new RecipeQuery(offset, cacheStart - currentOffset, diet, cuisine, category, freeText),
                         newCaches,
                         recipes
                 );
@@ -111,16 +112,27 @@ public class RecipeService {
             // limit the start to the cache size
             int start = Math.max(currentOffset - cache.getOffset(), 0);
             // limit the end to the cache size
-            int end = Math.min(neededEndExclusive - cache.getOffset(), cache.getNumber());
+            int end = Math.min(neededEndExclusive - cache.getOffset(), cache.getNumber() - 1);
+
+            if (start > end) {
+                log.error("got invalid range {}-{} in query {}, stopping cache check", start, end, query);
+                break;
+            }
 
             log.info(
                     "Get from DB for range {}-{} in query {}",
                     start,
-                    end - 1,
+                    end,
                     query
             );
 
             List<RecipeEntity> cachedRecipes = cache.getRecipes();
+
+            if (cachedRecipes.size() < end || cachedRecipes.size() < start) {
+                log.error("got invalid range {}-{} in query {}, stopping cache check", start, end, query);
+                break;
+            }
+
             recipes.addAll(cachedRecipes.subList(start, end));
             currentOffset = cacheEnd;
         }
@@ -130,24 +142,26 @@ public class RecipeService {
             collectRecipes(
                     new RecipeQuery(currentOffset,
                                     neededEndExclusive - currentOffset,
-                                    category,
-                                    cuisine,
                                     diet,
+                                    cuisine,
+                                    category,
                                     freeText),
                     newCaches,
                     recipes
             );
         }
 
-        attachExistingRecipes(newCaches);
+        if (!newCaches.isEmpty()) {
+            attachExistingRecipes(newCaches);
 
-        // by saving all the caches, we also save the recipes in them (cascade);
-        List<RecipeQueryEntity> mergedCaches = mergeCaches(caches, newCaches);
+            // by saving all the caches, we also save the recipes in them (cascade);
+            List<RecipeQueryEntity> mergedCaches = mergeCaches(caches, newCaches);
 
-        log.info("Merged caches: {}", mergedCaches);
-        recipeQueryRepo.saveAllAndFlush(mergedCaches);
+            log.info("Merged caches: {}", mergedCaches);
+            recipeQueryRepo.saveAllAndFlush(mergedCaches);
 
-        log.info("Successfully merged {} existing caches with {} new caches", caches.size(), newCaches.size());
+            log.info("Successfully merged {} existing caches with {} new caches", caches.size(), newCaches.size());
+        }
 
         return recipes.stream()
                 .map(recipeMapper::recipeEntityToRecipeDto)

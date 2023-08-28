@@ -9,6 +9,7 @@ import java.util.Map;
 @Slf4j
 @AllArgsConstructor
 public enum Diet {
+    CREOLE("creole"),
     DAIRY_FREE("dairy free"),
     FODMAP("fodmap friendly"),
     GLUTEN_FREE("gluten free"),

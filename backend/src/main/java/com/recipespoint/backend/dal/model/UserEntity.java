@@ -14,7 +14,7 @@ import java.util.Set;
 @RequiredArgsConstructor
 public class UserEntity {
     @Id
-    @UuidGenerator
+//    @UuidGenerator // since we use a dummy to demonstrate the project and don't have real users
     private String id;
 
     private String username;

@@ -20,6 +20,7 @@ public class ObjectMapperProvider {
     }
 
     public String mapAnalyzedInstructionsToString(Collection<RecipeDto.AnalyzedInstruction> instructions) {
+        if (instructions == null || instructions.isEmpty()) return null;
         try {
             return objectMapper.writeValueAsString(instructions);
         } catch (JsonProcessingException e) {
@@ -28,6 +29,7 @@ public class ObjectMapperProvider {
     }
 
     public Collection<RecipeDto.AnalyzedInstruction> mapStringToAnalyzedInstructions(String data) {
+        if (data == null || data.isEmpty()) return null;
         try {
             TypeReference<Collection<RecipeDto.AnalyzedInstruction>> typeRef = new TypeReference<>() {};
             return objectMapper.readValue(data, typeRef);

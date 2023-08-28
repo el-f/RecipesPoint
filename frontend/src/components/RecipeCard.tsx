@@ -1,54 +1,50 @@
-import * as React from "react";
-import { styled } from "@mui/material/styles";
 import Card from "@mui/material/Card";
 import CardHeader from "@mui/material/CardHeader";
 import CardMedia from "@mui/material/CardMedia";
 import CardContent from "@mui/material/CardContent";
 import CardActions from "@mui/material/CardActions";
 import Avatar from "@mui/material/Avatar";
-import IconButton, { IconButtonProps } from "@mui/material/IconButton";
+import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
-import { green } from "@mui/material/colors";
 import StarBorderIcon from "@mui/icons-material/StarBorder";
-import RestaurantIcon from "@mui/icons-material/Restaurant";
-import { Recipe } from "../@types/recipes";
+import { Recipe } from "../@types/recipe";
 import StarIcon from "@mui/icons-material/Star";
-import { useEffect, useState } from "react";
 import { Tooltip } from "@mui/material";
+import { useAtom, useAtomValue } from "jotai";
+import { userAtom } from "../atoms/user-atom";
+import { useFavorites } from "../api/use-favorites";
+import { cardStyle } from "../styles/styles";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import { selectedRecipeAtom } from "../atoms/selected-recipe-atom";
 
 export default function RecipeCard({ recipe }: { recipe: Recipe }) {
-  const [expanded, setExpanded] = React.useState(false);
-  const [favoriteSet, setFavorite] = useState(
-    new Set<number>([782585, 644387, 766453])
-  );
-
-  useEffect(() => {
-    console.log("favoriteSet", favoriteSet);
-  }, [favoriteSet]);
-
-  const handleExpandClick = () => {
-    setExpanded(!expanded);
-  };
+  const user = useAtomValue(userAtom);
+  const { favoriteIdsSet, addFavorite, removeFavorite } = useFavorites(user.id);
 
   function handleClick() {
-    if (favoriteSet.has(recipe.id)) {
-      favoriteSet.delete(recipe.id);
+    if (favoriteIdsSet.has(recipe.id)) {
+      removeFavorite(recipe.id);
     } else {
-      favoriteSet.add(recipe.id);
+      addFavorite(recipe.id);
     }
-    setFavorite(new Set(favoriteSet));
   }
+
+  const [, setSelectedRecipe] = useAtom(selectedRecipeAtom);
 
   return (
     <Card sx={cardStyle}>
       <CardHeader
         avatar={
-          <Avatar sx={{ bgcolor: green[500] }}>
-            <RestaurantIcon />
+          <Avatar>
+            <IconButton
+              aria-label="recipe"
+              onClick={() => setSelectedRecipe(recipe)}
+            >
+              <VisibilityIcon />
+            </IconButton>
           </Avatar>
         }
         title={recipe.title}
-        subheader="September 14, 2016"
       />
       <CardMedia
         component="img"
@@ -57,12 +53,20 @@ export default function RecipeCard({ recipe }: { recipe: Recipe }) {
         alt={recipe.title}
       />
       <CardContent>
-        <Typography variant="body2" color="text.secondary">
-          {recipe.title}
+        <Typography
+          sx={{
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+            display: "-webkit-box",
+            WebkitLineClamp: "2",
+            WebkitBoxOrient: "vertical",
+          }}
+        >
+          {recipe.summary?.replace(/(<([^>]+)>)/gi, "")}
         </Typography>
       </CardContent>
       <CardActions disableSpacing>
-        {favoriteSet.has(recipe.id) ? (
+        {favoriteIdsSet.has(recipe.id) ? (
           <Tooltip title="Remove from favorites">
             <IconButton
               aria-label="remove from favorites"
@@ -82,25 +86,3 @@ export default function RecipeCard({ recipe }: { recipe: Recipe }) {
     </Card>
   );
 }
-
-const cardStyle = {
-  height: "100%",
-  display: "flex",
-  flexDirection: "column",
-  justifyContent: "space-between",
-};
-
-interface ExpandMoreProps extends IconButtonProps {
-  expand: boolean;
-}
-
-const ExpandMore = styled((props: ExpandMoreProps) => {
-  const { expand, ...other } = props;
-  return <IconButton {...other} />;
-})(({ theme, expand }) => ({
-  transform: !expand ? "rotate(0deg)" : "rotate(180deg)",
-  marginLeft: "auto",
-  transition: theme.transitions.create("transform", {
-    duration: theme.transitions.duration.shortest,
-  }),
-}));

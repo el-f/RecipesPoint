@@ -22,7 +22,7 @@ public record RecipeQuery(
         String params = "offset=" + offset + "&number=" + number;
         if (diet != null) params += "&diet=" + diet;
         if (cuisine != null) params += "&cuisine=" + cuisine;
-        if (category != null) params += "&category=" + category;
+        if (category != null) params += "&type=" + category;
         if (freeText != null) params += "&query=" + freeText;
         return params;
     }
