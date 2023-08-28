@@ -14,13 +14,12 @@ export function RecipeGrid({ recipes }: RecipeGridProps) {
   const [selectedRecipe, setSelectedRecipe] = useAtom(selectedRecipeAtom);
   const [query, setQuery] = useAtom(queryAtom);
 
-  const loadMore = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const loadMore = () => {
     setQuery({
       ...query,
       offset: query.offset + 7,
       number: query.number + 7,
     });
-    e.preventDefault();
   };
 
   const isOnHome = window.location.pathname === "/home";
@@ -39,7 +38,7 @@ export function RecipeGrid({ recipes }: RecipeGridProps) {
       )}
       <Grid container spacing={3}>
         {recipes.map((recipe: Recipe) => (
-          <Grid key={recipe.id} item xs={12} sm={6} md={4} lg={5}>
+          <Grid key={recipe.id} item xs={12} sm={6} md={4} lg={4}>
             <RecipeCard recipe={recipe} />
           </Grid>
         ))}

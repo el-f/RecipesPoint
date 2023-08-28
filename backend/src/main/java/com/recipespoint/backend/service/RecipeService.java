@@ -9,6 +9,7 @@ import com.recipespoint.backend.dto.RecipeQuery;
 import com.recipespoint.backend.util.RecipeMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -38,6 +39,9 @@ public class RecipeService {
         this.spoonacularService = spoonacularService;
     }
 
+    @Value("${spoonacular.api.use-cache}")
+    private boolean useCache;
+
     public RecipeDto addRecipe(RecipeDto recipe) {
         log.info("Adding recipe with id: {}", recipe.id());
         RecipeEntity entity = recipeMapper.recipeDtoToRecipeEntity(recipe);
@@ -48,6 +52,11 @@ public class RecipeService {
     }
 
     public List<RecipeDto> getRecipes(RecipeQuery query) {
+        if (!useCache) {
+            log.info("Getting recipes for query {} without using cache", query);
+            return spoonacularService.getRecipes(query);
+        }
+
         try {
             log.info("Getting recipes for query {}", query);
             return getRecipesUsingCache(query);
