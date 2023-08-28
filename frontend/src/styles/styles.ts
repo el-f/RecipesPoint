@@ -24,7 +24,7 @@ export const WrapperStyle = styled("div")(({ theme }) => ({
   },
 }));
 
-export const GridWrapperStyle = styled("div")(({ theme }) => ({
+export const GridWrapperStyle = styled("div")(() => ({
   display: "flex",
   justifyContent: "center",
 }));

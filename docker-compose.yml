@@ -1,0 +1,46 @@
+version: '3'
+
+services:
+
+  db:
+    image: mysql:8.0
+    environment:
+      - MYSQL_DATABASE=recipes
+      - MYSQL_ROOT_PASSWORD=123456
+    ports:
+      - "3306:3306"
+    networks:
+      - recipes
+
+  app:
+    image: my-spring-app
+    build: ./backend
+    depends_on:
+      - db
+    ports:
+      - "8081:8081"
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
+    networks:
+      - recipes
+
+
+  react:
+    container_name: react
+    restart: always
+    build: ./frontend
+    stdin_open: true
+    ports:
+      - "5173:5173"
+      # - "80:5173"
+      - "80:80"
+    depends_on:
+      - app
+    networks:
+      - recipes
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+networks:
+  recipes:
+    driver: bridge
