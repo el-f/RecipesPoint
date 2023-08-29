@@ -18,30 +18,26 @@ export default function NavBar() {
   const isOnHome = window.location.pathname === "/home";
 
   return (
-    <>
-      <List style={{ position: "fixed", top: "2vh", left: "2vw" }}>
-        {sidebarItems.map((item) => (
-          <ListItem key={item.text} disablePadding>
-            <Link
-              to={item.route}
-              style={{
-                textDecoration: "none",
-                color: "inherit",
-                width: "100%",
-              }}
-            >
-              <ListItemButton
-                selected={item.route === window.location.pathname}
-              >
-                <ListItemIcon>{item.icon}</ListItemIcon>
-                <ListItemText primary={item.text} />
-              </ListItemButton>
-            </Link>
-          </ListItem>
-        ))}
-        <Divider sx={{ m: 3 }} />
-        {isOnHome && <RecipeFilter />}
-      </List>
-    </>
+    <List style={{ position: "fixed", top: "2vh", left: "2vw" }}>
+      {sidebarItems.map((item) => (
+        <ListItem key={item.text} disablePadding>
+          <Link
+            to={item.route}
+            style={{
+              textDecoration: "none",
+              color: "inherit",
+              width: "100%",
+            }}
+          >
+            <ListItemButton selected={item.route === window.location.pathname}>
+              <ListItemIcon>{item.icon}</ListItemIcon>
+              <ListItemText primary={item.text} />
+            </ListItemButton>
+          </Link>
+        </ListItem>
+      ))}
+      <Divider sx={{ m: 3 }} />
+      {isOnHome && <RecipeFilter />}
+    </List>
   );
 }

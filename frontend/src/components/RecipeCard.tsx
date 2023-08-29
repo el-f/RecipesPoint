@@ -36,12 +36,14 @@ export default function RecipeCard({ recipe }: { recipe: Recipe }) {
       <CardHeader
         avatar={
           <Avatar>
-            <IconButton
-              aria-label="recipe"
-              onClick={() => setSelectedRecipe(recipe)}
-            >
-              <VisibilityIcon />
-            </IconButton>
+            <Tooltip title="View recipe">
+              <IconButton
+                aria-label="recipe"
+                onClick={() => setSelectedRecipe(recipe)}
+              >
+                <VisibilityIcon />
+              </IconButton>
+            </Tooltip>
           </Avatar>
         }
         title={recipe.title}

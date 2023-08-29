@@ -1,4 +1,3 @@
-// src/atoms.js
 import { atom } from "jotai";
 import { Recipe } from "../@types/recipe";
 

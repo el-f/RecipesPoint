@@ -5,6 +5,7 @@ import { Form, FormikProvider, useFormik } from "formik";
 import { Button, Stack, TextField, Tooltip } from "@mui/material";
 import { dietAsSelectOptions } from "../@types/diet.enum";
 import { cuisineAsSelectOptions } from "../@types/cuisine.enum";
+import { categoryAsSelectOptions } from "../@types/category.enum";
 import useRecipes from "../api/use-recipes";
 import SearchIcon from "@mui/icons-material/Search";
 
@@ -87,7 +88,7 @@ export default function RecipeFilter() {
             helperText={touched.category && errors.category}
           >
             <option value="" />
-            {cuisineAsSelectOptions.map((cuisine) => (
+            {categoryAsSelectOptions.map((cuisine) => (
               <option key={cuisine.value} value={cuisine.value}>
                 {cuisine.label}
               </option>
