@@ -18,7 +18,7 @@ export default function NavBar() {
   const isOnHome = window.location.pathname === "/home";
 
   return (
-    <List style={{ position: "fixed", top: "2vh", left: "2vw" }}>
+    <List style={{ position: "fixed", top: "2vh", left: "2vw", minWidth: 240 }}>
       {sidebarItems.map((item) => (
         <ListItem key={item.text} disablePadding>
           <Link
