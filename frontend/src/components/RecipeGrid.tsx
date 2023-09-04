@@ -17,15 +17,15 @@ export function RecipeGrid({ recipes }: RecipeGridProps) {
   const loadMore = () => {
     setQuery({
       ...query,
-      offset: query.offset + 7,
-      number: query.number + 7,
+      offset: query.offset + 7, // we just move the offset, the new data will be merged with the old one
+      number: query.number, // we keep the same number of recipes per load (we progress in pages linearly with the offset)
     });
   };
 
   const isOnHome = window.location.pathname === "/home";
 
   if (recipes.length === 0) {
-    return <div>No recipes found.</div>;
+    return "No recipes found.";
   }
 
   return (

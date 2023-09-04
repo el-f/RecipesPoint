@@ -9,7 +9,7 @@ export default function Favorites() {
   const { isLoading, isError, favorites } = useFavorites(user.id);
 
   if (isLoading) return <CircularProgress />;
-  if (isError) return <div>Something went wrong, please try again later.</div>;
+  if (isError) return "Something went wrong, please try again later.";
 
   return <RecipeGrid recipes={favorites} />;
 }

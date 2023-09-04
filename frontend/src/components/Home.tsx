@@ -9,7 +9,7 @@ export default function Home() {
   const { data, isLoading, error } = useRecipes(query);
 
   if (isLoading) return <CircularProgress />;
-  if (error) return <div>Something went wrong, please try again later.</div>;
+  if (error) return "Something went wrong, please try again later.";
 
   return <RecipeGrid recipes={data} />;
 }

@@ -9,3 +9,6 @@ export const queryAtom = atom<RecipeQuery>({
   category: null,
   freeText: null,
 });
+
+
+export const lastQueryAtom = atom<RecipeQuery | null>(null);

@@ -30,7 +30,8 @@ export default function RecipeFilter() {
     validationSchema: querySchema,
     onSubmit: (values) => {
       setQuery({
-        ...query,
+        offset: 0, // we reset the offset to 0 (we start from the beginning for each new search)
+        number: 7,
         diet: values.diet || null,
         cuisine: values.cuisine || null,
         category: values.category || null,

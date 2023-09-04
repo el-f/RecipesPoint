@@ -101,6 +101,7 @@ public class RecipeService {
         int currentOffset = offset;
 
         for (final RecipeQueryEntity cache : caches) {
+            if (currentOffset >= neededEndExclusive) break; // we already got all the recipes we need
             int cacheStart = cache.getOffset();
             int cacheEnd = cache.getOffset() + cache.getNumber();
 
@@ -121,7 +122,8 @@ public class RecipeService {
             // limit the start to the cache size
             int start = Math.max(currentOffset - cache.getOffset(), 0);
             // limit the end to the cache size
-            int end = Math.min(neededEndExclusive - cache.getOffset(), cache.getNumber() - 1);
+            int end = Math.min(neededEndExclusive - cache.getOffset(), cache.getNumber());
+            log.info("currentOffset: {}, cacheStart: {}, cacheEnd: {}, neededEndExclusive: {}, cache.getNumber(): {}, cache.getOffset(): {}", currentOffset, cacheStart, cacheEnd, neededEndExclusive, cache.getNumber(), cache.getOffset());
 
             if (start > end) {
                 log.error("got invalid range {}-{} in query {}, stopping cache check", start, end, query);

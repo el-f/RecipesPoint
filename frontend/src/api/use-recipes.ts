@@ -2,14 +2,17 @@ import { useQuery, useQueryClient } from "react-query";
 import { RecipeQuery } from "../@types/recipe-query";
 import api from "./api";
 import { Recipe } from "../@types/recipe";
-import { useCallback, useMemo } from "react";
+import { useCallback } from "react";
 import _ from "lodash";
+import { useAtom } from "jotai";
+import { lastQueryAtom } from "../atoms/query-atom";
 
 const useRecipes = (query: RecipeQuery) => {
   const queryClient = useQueryClient();
 
-  const queryKey = useMemo(() => ["recipes", query], [query]); // useMemo to prevent triggering fetch render loop
-  const lastQuery: RecipeQuery | undefined = queryClient.getQueryData(queryKey);
+  const queryKey = ["recipes", query];
+
+  const [lastQuery, setLastQuery] = useAtom(lastQueryAtom);
 
   const fetchRecipes = useCallback(async () => {
     console.log("fetching recipes", query);
@@ -19,16 +22,20 @@ const useRecipes = (query: RecipeQuery) => {
       _.omit(query, ["offset", "number"]),
     ];
 
+    const lastData =
+      queryClient.getQueryData<Recipe[]>(["recipes", lastQuery]) || [];
+
+    setLastQuery(query);
+
     if (_.isEqual(lastQ, currentQ)) {
+      console.log("merging recipes", data, lastData);
       // merge (when requesting next page) but remove duplicates (when refetching because of cacheTime)
-      return _.uniqBy(
-        [...(queryClient.getQueryData<Recipe[]>(queryKey) || []), ...data],
-        "id"
-      );
+      return _.uniqBy([...lastData, ...data], "id");
     }
 
+    console.log("overwriting recipes", data);
     return data;
-  }, [query, queryClient, queryKey, lastQuery]);
+  }, [query, lastQuery, queryClient, setLastQuery]);
 
   return useQuery(queryKey, fetchRecipes, {
     staleTime: 1000 * 60 * 5, // 5 minutes
