@@ -1,4 +1,4 @@
-# RecipesPoint
+# RecipesPoint [![CodeFactor](https://www.codefactor.io/repository/github/el-f/recipespoint/badge)](https://www.codefactor.io/repository/github/el-f/recipespoint)
 
 Full description and requirements are located in `Task.pdf`.
 
