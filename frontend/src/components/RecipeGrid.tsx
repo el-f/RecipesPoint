@@ -5,12 +5,14 @@ import { useAtom } from "jotai";
 import { selectedRecipeAtom } from "../atoms/selected-recipe-atom";
 import RecipeDetails from "./RecipeDetails";
 import { queryAtom } from "../atoms/query-atom";
+import { FavoritesManager } from "../api/use-favorites";
 
 export type RecipeGridProps = {
   recipes: Recipe[];
+  favoritesManager: FavoritesManager;
 };
 
-export function RecipeGrid({ recipes }: RecipeGridProps) {
+export function RecipeGrid({ recipes, favoritesManager }: RecipeGridProps) {
   const [selectedRecipe, setSelectedRecipe] = useAtom(selectedRecipeAtom);
   const [query, setQuery] = useAtom(queryAtom);
 
@@ -39,7 +41,7 @@ export function RecipeGrid({ recipes }: RecipeGridProps) {
       <Grid container spacing={3}>
         {recipes.map((recipe: Recipe) => (
           <Grid key={recipe.id} item xs={12} sm={6} md={4} lg={4}>
-            <RecipeCard recipe={recipe} />
+            <RecipeCard recipe={recipe} favoritesManager={favoritesManager} />
           </Grid>
         ))}
       </Grid>

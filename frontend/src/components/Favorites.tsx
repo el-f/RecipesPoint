@@ -6,10 +6,10 @@ import { userAtom } from "../atoms/user-atom";
 
 export default function Favorites() {
   const user = useAtomValue(userAtom);
-  const { isLoading, isError, favorites } = useFavorites(user.id);
+  const favoritesManager = useFavorites(user.id);
 
-  if (isLoading) return <CircularProgress />;
-  if (isError) return "Something went wrong, please try again later.";
+  if (favoritesManager.isLoading) return <CircularProgress />;
+  if (favoritesManager.isError) return "Something went wrong, please try again later.";
 
-  return <RecipeGrid recipes={favorites} />;
+  return <RecipeGrid recipes={favoritesManager.favorites} favoritesManager={favoritesManager} />;
 }

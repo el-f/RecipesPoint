@@ -10,22 +10,23 @@ import StarBorderIcon from "@mui/icons-material/StarBorder";
 import { Recipe } from "../@types/recipe";
 import StarIcon from "@mui/icons-material/Star";
 import { Tooltip } from "@mui/material";
-import { useAtom, useAtomValue } from "jotai";
-import { userAtom } from "../atoms/user-atom";
-import { useFavorites } from "../api/use-favorites";
+import { useAtom } from "jotai";
+import { FavoritesManager } from "../api/use-favorites";
 import { cardStyle } from "../styles/styles";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import { selectedRecipeAtom } from "../atoms/selected-recipe-atom";
 
-export default function RecipeCard({ recipe }: { recipe: Recipe }) {
-  const user = useAtomValue(userAtom);
-  const { favoriteIdsSet, addFavorite, removeFavorite } = useFavorites(user.id);
+export type RecipeCardProps = {
+  recipe: Recipe;
+  favoritesManager: FavoritesManager;
+};
 
-  function handleClick() {
-    if (favoriteIdsSet.has(recipe.id)) {
-      removeFavorite(recipe.id);
+export default function RecipeCard({ recipe, favoritesManager }: RecipeCardProps) {
+  function handleFavToggle() {
+    if (favoritesManager.favoriteIdsSet.has(recipe.id)) {
+      favoritesManager.removeFavorite(recipe.id);
     } else {
-      addFavorite(recipe.id);
+      favoritesManager.addFavorite(recipe.id);
     }
   }
 
@@ -68,18 +69,18 @@ export default function RecipeCard({ recipe }: { recipe: Recipe }) {
         </Typography>
       </CardContent>
       <CardActions disableSpacing>
-        {favoriteIdsSet.has(recipe.id) ? (
+        {favoritesManager.favoriteIdsSet.has(recipe.id) ? (
           <Tooltip title="Remove from favorites">
             <IconButton
               aria-label="remove from favorites"
-              onClick={handleClick}
+              onClick={handleFavToggle}
             >
               <StarIcon />
             </IconButton>
           </Tooltip>
         ) : (
           <Tooltip title="Add to favorites">
-            <IconButton aria-label="add to favorites" onClick={handleClick}>
+            <IconButton aria-label="add to favorites" onClick={handleFavToggle}>
               <StarBorderIcon />
             </IconButton>
           </Tooltip>

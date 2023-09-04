@@ -15,7 +15,7 @@ const useRecipes = (query: RecipeQuery) => {
   const [lastQuery, setLastQuery] = useAtom(lastQueryAtom);
 
   const fetchRecipes = useCallback(async () => {
-    console.log("fetching recipes", query);
+    console.log("fetching recipes...", query);
     const data = await api.getRecipes(query);
     const [lastQ, currentQ] = [
       _.omit(lastQuery, ["offset", "number"]),
