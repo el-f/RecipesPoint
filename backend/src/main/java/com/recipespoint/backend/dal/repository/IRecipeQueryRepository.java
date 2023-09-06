@@ -10,10 +10,10 @@ public interface IRecipeQueryRepository extends JpaRepository<RecipeQueryEntity,
 
     @Query("SELECT r FROM RecipeQueryEntity r WHERE " +
             "(r.offset <= :offsetUpperBound AND (r.offset + r.number) >= :offsetLowerBound) AND " +
-            "(:category IS NULL OR r.category LIKE %:category%) AND " +
-            "(:cuisine IS NULL OR r.cuisine LIKE %:cuisine%) AND " +
-            "(:diet IS NULL OR r.diet LIKE %:diet%) AND " +
-            "(:freeText IS NULL OR r.freeText LIKE %:freeText%)" +
+            "(:category = r.category) AND " +
+            "(:cuisine = r.cuisine) AND " +
+            "(:diet = r.diet) AND " +
+            "(:freeText = r.freeText) " +
             "ORDER BY r.offset ASC")
     List<RecipeQueryEntity> getAllByFilters(
             Integer offsetLowerBound, Integer offsetUpperBound,
