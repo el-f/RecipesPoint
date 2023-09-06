@@ -3,7 +3,7 @@
 Full description and requirements are located in `Task.pdf`.
 
 ## Demo:
-https://github.com/el-f/RecipesPoint/assets/39451680/b1e465ba-ba2f-466d-a185-c9b72a73a645
+https://github.com/el-f/RecipesPoint/assets/39451680/9b0747ef-11dc-4868-92ad-3e843a74518d
 
 
 ## Tech Stack:
